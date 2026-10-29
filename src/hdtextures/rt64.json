@@ -1,0 +1,21 @@
+{
+    "configuration": {
+        "autoPath": "rt64",
+        "configurationVersion": 3,
+        "defaultOperation": "stream",
+        "defaultShift": "half",
+        "hashVersion": 5
+    },
+    "extraFiles": [],
+    "operationFilters": [],
+    "shiftFilters": [],
+    "textures": [
+        {
+            "hashes": {
+                "rice": "",
+                "rt64": "f67d52856d5aa289"
+            },
+            "path": "frog.atlas"
+        }
+    ]
+}
