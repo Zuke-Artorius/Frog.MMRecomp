@@ -8,14 +8,44 @@
 #include "skel/gFrogHumanFistSkel.h"
 
 #include "dl/gCull.h"
-#include "dl/gFrogMouthOpen.h"
 #include "dl/gFrogMouthClosed.h"
+#include "dl/gFrogMouthHalfOpen.h"
+#include "dl/gFrogMouthOpen.h"
+#include "dl/gFrogMouthSmile.h"
+
+TexturePtr gFrogEyes[] = {
+    gFrogMouthClosed_tmem_eyes_ci8,
+    gFrogMouthClosed_tmem_eyes_ci8,
+    gFrogMouthClosed_tmem_eyes_ci8,
+    gFrogMouthClosed_tmem_eyes_l_ci8,
+    gFrogMouthClosed_tmem_eyes_r_ci8,
+    gFrogMouthClosed_tmem_eyes_ci8,
+    gFrogMouthClosed_tmem_eyes_ci8,
+    gFrogMouthClosed_tmem_eyes_ci8,
+};
+
+TexturePtr gFrogEyelids[] = {
+    gFrogMouthClosed_tmem_eyelids_ci8,
+    gFrogMouthClosed_tmem_eyelids_half_ci8,
+    gFrogMouthClosed_tmem_eyelids_closed_ci8,
+    gFrogMouthClosed_tmem_eyelids_ci8,
+    gFrogMouthClosed_tmem_eyelids_ci8,
+    gFrogMouthClosed_tmem_eyelids_ci8,
+    gFrogMouthClosed_tmem_eyelids_ci8,
+    gFrogMouthClosed_tmem_eyelids_ci8,
+};
+
+static Gfx* FrogMouthDL[PLAYER_MOUTH_MAX] = {
+    gFrogMouthClosed,
+    gFrogMouthHalfOpen,
+    gFrogMouthOpen,
+    gFrogMouthSmile,
+};
 
 /*  This is used to initialize a vector which is checked
     against yIntersect
 */
-
-f32 frogYIntersectArr[PLAYER_FORM_MAX] = {
+f32 FrogYIntersectArr[PLAYER_FORM_MAX] = {
     1265.0f, // PLAYER_FORM_FIERCE_DEITY
     1056.0f, // PLAYER_FORM_GORON
     1506.0f, // PLAYER_FORM_ZORA
