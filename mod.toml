@@ -65,8 +65,8 @@ data_reference_syms_files = [ "Zelda64RecompSyms/mm.us.rev1.datasyms.toml", "Zel
 
 # Additional files to include in the mod.
 additional_files = [
-    "src/hdtextures/frog.atlas.dds",
-    "src/hdtextures/rt64.json",
+    "hdtextures/frog.atlas.dds",
+    "hdtextures/rt64.json",
  ]
 
 #[[manifest.config_options]]

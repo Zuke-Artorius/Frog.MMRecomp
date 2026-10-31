@@ -5,6 +5,37 @@
 #include "playermodelmanager_api.h"
 
 #include "skel/gFrogHumanSkel.h"
+#include "skel/gFrogHumanFistSkel.h"
+
+#include "dl/gCull.h"
+#include "dl/gFrogMouthOpen.h"
+#include "dl/gFrogMouthClosed.h"
+
+/*  This is used to initialize a vector which is checked
+    against yIntersect
+*/
+
+f32 frogYIntersectArr[PLAYER_FORM_MAX] = {
+    1265.0f, // PLAYER_FORM_FIERCE_DEITY
+    1056.0f, // PLAYER_FORM_GORON
+    1506.0f, // PLAYER_FORM_ZORA
+    359.0f,  // PLAYER_FORM_DEKU
+    -350.0f,  // PLAYER_FORM_HUMAN
+};
+
+extern f32 D_801C08FC[PLAYER_FORM_MAX];
+//    1265.0f, // PLAYER_FORM_FIERCE_DEITY
+//    1056.0f, // PLAYER_FORM_GORON
+//    1506.0f, // PLAYER_FORM_ZORA
+//    359.0f,  // PLAYER_FORM_DEKU
+//    826.0f,  // PLAYER_FORM_HUMAN
+
+extern struct PlayerFaceIndices {
+    /* 0x0 */ u8 eyeIndex;
+    /* 0x1 */ u8 mouthIndex;
+} PlayerFaceIndices; // size = 0x2
+
+extern struct PlayerFaceIndices sPlayerFaces[];
 
 extern LinkAnimationHeader gPlayerAnim_pn_Tbox_open;
 extern LinkAnimationHeader gPlayerAnim_link_demo_back_to_past;
@@ -128,22 +159,3 @@ PlayerAgeProperties gFrogAgeProperties = {
         &gPlayerAnim_link_normal_climb_endBL,
     },
 };
-
-/*  This is used to initialize a vector which is checked
-    against yIntersect
-*/
-
-f32 frogYIntersectArr[PLAYER_FORM_MAX] = {
-    1265.0f, // PLAYER_FORM_FIERCE_DEITY
-    1056.0f, // PLAYER_FORM_GORON
-    1506.0f, // PLAYER_FORM_ZORA
-    359.0f,  // PLAYER_FORM_DEKU
-    -350.0f,  // PLAYER_FORM_HUMAN
-};
-
-extern f32 D_801C08FC[PLAYER_FORM_MAX];
-//    1265.0f, // PLAYER_FORM_FIERCE_DEITY
-//    1056.0f, // PLAYER_FORM_GORON
-//    1506.0f, // PLAYER_FORM_ZORA
-//    359.0f,  // PLAYER_FORM_DEKU
-//    826.0f,  // PLAYER_FORM_HUMAN
