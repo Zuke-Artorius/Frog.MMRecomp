@@ -2214,28 +2214,28 @@ Gfx gFrogHumanFistSkel_bone020_gLinkHumanTorsoLimb_mesh_layer_Opaque_tri_1[] = {
 };
 
 Gfx mat_gFrogHumanFistSkel_f3d_cull_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_SHADING_SMOOTH | G_CULL_FRONT | G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_FOG),
+	gsSPLoadGeometryMode(G_SHADING_SMOOTH | G_CULL_FRONT | G_FOG | G_SHADE | G_CULL_BACK | G_ZBUFFER | G_LIGHTING),
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_CYC_2CYCLE | G_TC_FILT | G_TT_NONE | G_TL_TILE | G_TF_BILERP | G_PM_NPRIMITIVE | G_CD_MAGICSQ | G_TD_CLAMP | G_TP_PERSP | G_AD_NOISE | G_CK_NONE),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF2),
+	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, 0, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_CYC_2CYCLE | G_CK_NONE | G_TD_CLAMP | G_AD_NOISE | G_TL_TILE | G_TP_PERSP | G_CD_MAGICSQ | G_TF_BILERP | G_TC_FILT | G_TT_NONE),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF2 | G_AC_NONE),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
+	gsDPSetPrimColor(0, 0, 255, 255, 255, 0),
 	gsSPEndDisplayList(),
 };
 
 Gfx mat_revert_gFrogHumanFistSkel_f3d_cull_layerOpaque[] = {
 	gsDPPipeSync(),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_RM_AA_ZB_OPA_SURF | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF2),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_OPA_SURF2 | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF | G_AC_NONE),
 	gsSPEndDisplayList(),
 };
 
 Gfx mat_gFrogHumanFistSkel_f3d_outline_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_SHADING_SMOOTH | G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_FOG),
+	gsSPLoadGeometryMode(G_SHADING_SMOOTH | G_FOG | G_SHADE | G_CULL_BACK | G_ZBUFFER | G_LIGHTING),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, 0, 0, 0, 0, 1, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_CYC_2CYCLE | G_TC_FILT | G_TT_NONE | G_TL_TILE | G_TF_BILERP | G_PM_NPRIMITIVE | G_CD_MAGICSQ | G_TD_CLAMP | G_TP_PERSP | G_AD_NOISE | G_CK_NONE),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF2),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_PM_NPRIMITIVE | G_CYC_2CYCLE | G_CK_NONE | G_TD_CLAMP | G_AD_NOISE | G_TL_TILE | G_TP_PERSP | G_CD_MAGICSQ | G_TF_BILERP | G_TC_FILT | G_TT_NONE),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF2 | G_AC_NONE),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 46, 46, 46, 255),
 	gsSPEndDisplayList(),
@@ -2243,16 +2243,16 @@ Gfx mat_gFrogHumanFistSkel_f3d_outline_layerOpaque[] = {
 
 Gfx mat_revert_gFrogHumanFistSkel_f3d_outline_layerOpaque[] = {
 	gsDPPipeSync(),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_RM_AA_ZB_OPA_SURF | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF2),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_OPA_SURF2 | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF | G_AC_NONE),
 	gsSPEndDisplayList(),
 };
 
 Gfx mat_gFrogHumanFistSkel_f3d_remap_layerOpaque[] = {
-	gsSPLoadGeometryMode(G_SHADING_SMOOTH | G_ZBUFFER | G_SHADE | G_LIGHTING | G_FOG),
+	gsSPLoadGeometryMode(G_SHADING_SMOOTH | G_FOG | G_SHADE | G_ZBUFFER | G_LIGHTING),
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, TEXEL0, COMBINED, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED),
-	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_CYC_2CYCLE | G_TC_FILT | G_TL_TILE | G_TF_BILERP | G_PM_NPRIMITIVE | G_CD_MAGICSQ | G_TD_CLAMP | G_TP_PERSP | G_TT_RGBA16 | G_AD_NOISE | G_CK_NONE),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_RM_FOG_SHADE_A | G_ZS_PIXEL | G_RM_AA_ZB_TEX_EDGE2),
+	gsSPSetOtherMode(G_SETOTHERMODE_H, 4, 20, G_CYC_2CYCLE | G_CK_NONE | G_TD_CLAMP | G_AD_NOISE | G_TL_TILE | G_TP_PERSP | G_CD_MAGICSQ | G_TF_BILERP | G_TT_RGBA16 | G_TC_FILT | G_PM_NPRIMITIVE),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_FOG_SHADE_A | G_RM_AA_ZB_TEX_EDGE2 | G_ZS_PIXEL | G_AC_NONE),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
 	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gFrogHumanFistSkel_tmem_atlas_pal_rgba16),
@@ -2268,7 +2268,7 @@ Gfx mat_gFrogHumanFistSkel_f3d_remap_layerOpaque[] = {
 
 Gfx mat_revert_gFrogHumanFistSkel_f3d_remap_layerOpaque[] = {
 	gsDPPipeSync(),
-	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_AC_NONE | G_RM_AA_ZB_OPA_SURF | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF2),
+	gsSPSetOtherMode(G_SETOTHERMODE_L, 0, 32, G_RM_AA_ZB_OPA_SURF2 | G_ZS_PIXEL | G_RM_AA_ZB_OPA_SURF | G_AC_NONE),
 	gsSPEndDisplayList(),
 };
 

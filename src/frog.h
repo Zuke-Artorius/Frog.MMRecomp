@@ -6,12 +6,17 @@
 
 #include "skel/gFrogHumanSkel.h"
 #include "skel/gFrogHumanFistSkel.h"
+#include "skel/gFrogHumanBottleSkel.h"
 
 #include "dl/gCull.h"
 #include "dl/gFrogMouthClosed.h"
 #include "dl/gFrogMouthHalfOpen.h"
 #include "dl/gFrogMouthOpen.h"
 #include "dl/gFrogMouthSmile.h"
+#include "dl/gFrogShield.h"
+#include "dl/gFrogScabbard.h"
+#include "dl/gFrogHilt.h"
+#include "dl/gFrogBlade.h"
 
 TexturePtr gFrogEyes[] = {
     gFrogMouthClosed_tmem_eyes_ci8,
