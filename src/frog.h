@@ -22,8 +22,7 @@
 #include "dl/gGiFrogShield.h"
 
 #define FROG_HEIGHT 0.51f
-
-bool isFrog;
+#define FROG_YINTERSECT -350.0f
 
 typedef enum FrogGetItemDrawId {
     /* -1 */   FROG_GID_NONE = -1,
@@ -32,8 +31,6 @@ typedef enum FrogGetItemDrawId {
     /*  2 */   FROG_GID_SHIELD_MIRROR,
     /*  3 */   FROG_GID_MAX,
 }FrogGetItemDrawId;
-
-static bool frogGearIsApplied[FROG_GID_MAX] = {false};
 
 extern struct PlayerFaceIndices {
     /* 0x0 */ u8 eyeIndex;
@@ -79,7 +76,7 @@ f32 FrogYIntersectArr[PLAYER_FORM_MAX] = {
     1056.0f, // PLAYER_FORM_GORON
     1506.0f, // PLAYER_FORM_ZORA
     359.0f,  // PLAYER_FORM_DEKU
-    -350.0f,  // PLAYER_FORM_HUMAN
+    FROG_YINTERSECT,  // PLAYER_FORM_HUMAN
 };
 
 extern f32 D_801C08FC[PLAYER_FORM_MAX];
@@ -114,60 +111,7 @@ static DrawItemTableEntry sOriginalDrawItemEntries[] = {
     { GetItem_DrawOpa0Xlu1, { gGiMirrorShieldEmptyDL, gGiMirrorShieldDL } },
 };
 
-static DrawItemTableEntry sFrogDrawItemEntries[] = {
-    // GID_SWORD_GILDED, OBJECT_GI_SWORD_3
-    { GetItem_DrawOpa0, { gGiFrogGildedSword } },
-    // GID_SHIELD_HERO, OBJECT_GI_SHIELD_2
-    { GetItem_DrawOpa0, { gGiFrogShield } },
-    // GID_SHIELD_MIRROR, OBJECT_GI_SHIELD_3
-    { GetItem_DrawOpa0, { gGiFrogShield } },
-};
-
 extern DrawItemTableEntry sDrawItemTable[];
-
-void Frog_EventHandler_GetItem(PlayerModelManagerHandle handle, PlayerModelManagerModelEvent event, void *userdata) {
-    int frogGID = (int)(uintptr_t)userdata;
-    int vanillaGID = GID_NONE;
-    switch (frogGID) {
-        case FROG_GID_SWORD_GILDED:
-            vanillaGID = GID_SWORD_GILDED;
-            break;
-        case FROG_GID_SHIELD_HERO:
-            vanillaGID = GID_SHIELD_HERO;
-            break;
-        case FROG_GID_SHIELD_MIRROR:
-            vanillaGID = GID_SHIELD_MIRROR;
-            break;
-        default:
-            return;
-    }
-    switch (event) {
-        case PMM_EVENT_MODEL_APPLIED_TO_MAIN_PLAYER:
-            sDrawItemTable[vanillaGID] = sFrogDrawItemEntries[frogGID];
-            frogGearIsApplied[frogGID] = true;
-            break;
-        case PMM_EVENT_MODEL_REMOVED_FROM_MAIN_PLAYER:
-            sDrawItemTable[vanillaGID] = sOriginalDrawItemEntries[frogGID];
-            frogGearIsApplied[frogGID] = false;
-            break;
-        default:
-            return;
-    }
-    recomp_printf("gear %d applied %d\n", frogGID, frogGearIsApplied[frogGID]);
-};
-
-void Frog_EventHandler_Human(PlayerModelManagerHandle handle, PlayerModelManagerModelEvent event, void *userdata) {
-    switch (event) {
-        case PMM_EVENT_MODEL_APPLIED_TO_MAIN_PLAYER:
-            isFrog = true;
-            break;
-            case PMM_EVENT_MODEL_REMOVED_FROM_MAIN_PLAYER:
-            isFrog = false;
-            break;
-        default:
-            return;
-    }
-};
 
 extern LinkAnimationHeader gPlayerAnim_pn_Tbox_open;
 extern LinkAnimationHeader gPlayerAnim_link_demo_back_to_past;

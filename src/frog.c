@@ -1,5 +1,82 @@
 #include "frog.h"
 
+Mtx frog_getitem_scale_mtx;
+
+Gfx scaled_gi_frog_sword_gilded[] = {
+    gsSPMatrix(&frog_getitem_scale_mtx, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(gGiFrogGildedSword),
+    gsSPPopMatrix(G_MTX_MODELVIEW),
+    gsSPEndDisplayList()
+};
+
+Gfx scaled_gi_frog_shield[] = {
+    gsSPMatrix(&frog_getitem_scale_mtx, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW),
+    gsSPDisplayList(gGiFrogShield),
+    gsSPPopMatrix(G_MTX_MODELVIEW),
+    gsSPEndDisplayList()
+};
+
+RECOMP_CALLBACK("*", recomp_on_init)
+void on_init() {
+    guScale(&frog_getitem_scale_mtx, 0.1f, 0.1f, 0.1f);
+}
+
+static DrawItemTableEntry sFrogDrawItemEntries[] = {
+    // GID_SWORD_GILDED, OBJECT_GI_SWORD_3
+    { GetItem_DrawOpa0, { scaled_gi_frog_sword_gilded } },
+    // GID_SHIELD_HERO, OBJECT_GI_SHIELD_2
+    { GetItem_DrawOpa0, { scaled_gi_frog_shield } },
+    // GID_SHIELD_MIRROR, OBJECT_GI_SHIELD_3
+    { GetItem_DrawOpa0, { scaled_gi_frog_shield } },
+};
+
+bool isFrog;
+
+void Frog_EventHandler_Human(PlayerModelManagerHandle handle, PlayerModelManagerModelEvent event, void *userdata) {
+    switch (event) {
+        case PMM_EVENT_MODEL_APPLIED_TO_MAIN_PLAYER:
+            isFrog = true;
+            break;
+            case PMM_EVENT_MODEL_REMOVED_FROM_MAIN_PLAYER:
+            isFrog = false;
+            break;
+        default:
+            return;
+    }
+};
+
+static bool frogGearIsApplied[FROG_GID_MAX] = {false};
+
+void Frog_EventHandler_GetItem(PlayerModelManagerHandle handle, PlayerModelManagerModelEvent event, void *userdata) {
+    int frogGID = (int)(uintptr_t)userdata;
+    int vanillaGID = GID_NONE;
+    switch (frogGID) {
+        case FROG_GID_SWORD_GILDED:
+            vanillaGID = GID_SWORD_GILDED;
+            break;
+        case FROG_GID_SHIELD_HERO:
+            vanillaGID = GID_SHIELD_HERO;
+            break;
+        case FROG_GID_SHIELD_MIRROR:
+            vanillaGID = GID_SHIELD_MIRROR;
+            break;
+        default:
+            return;
+    }
+    switch (event) {
+        case PMM_EVENT_MODEL_APPLIED_TO_MAIN_PLAYER:
+            sDrawItemTable[vanillaGID] = sFrogDrawItemEntries[frogGID];
+            frogGearIsApplied[frogGID] = true;
+            break;
+        case PMM_EVENT_MODEL_REMOVED_FROM_MAIN_PLAYER:
+            sDrawItemTable[vanillaGID] = sOriginalDrawItemEntries[frogGID];
+            frogGearIsApplied[frogGID] = false;
+            break;
+        default:
+            return;
+    }
+};
+
 PlayerModelManagerHandle gFrogHumanHandle;
 PlayerModelManagerHandle gFrogShieldHeroHandle;
 PlayerModelManagerHandle gFrogShieldMirrorHandle;

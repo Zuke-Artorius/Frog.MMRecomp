@@ -11,12 +11,16 @@ extern Vtx gGiFrogGildedSword_gGiFrogGildedSword_mesh_layer_Opaque_vtx_1[144];
 extern Gfx gGiFrogGildedSword_gGiFrogGildedSword_mesh_layer_Opaque_tri_1[];
 extern Vtx gGiFrogGildedSword_gGiFrogGildedSword_mesh_layer_Opaque_vtx_2[116];
 extern Gfx gGiFrogGildedSword_gGiFrogGildedSword_mesh_layer_Opaque_tri_2[];
+extern Vtx gGiFrogGildedSword_gGiFrogGildedSword_mesh_layer_Opaque_vtx_3[827];
+extern Gfx gGiFrogGildedSword_gGiFrogGildedSword_mesh_layer_Opaque_tri_3[];
 extern Gfx mat_gGiFrogGildedSword_f3dlite_material_layerOpaque[];
 extern Gfx mat_revert_gGiFrogGildedSword_f3dlite_material_layerOpaque[];
 extern Gfx mat_gGiFrogGildedSword_f3dlite_material_025_layerOpaque[];
 extern Gfx mat_revert_gGiFrogGildedSword_f3dlite_material_025_layerOpaque[];
 extern Gfx mat_gGiFrogGildedSword_f3dlite_material_026_layerOpaque[];
 extern Gfx mat_revert_gGiFrogGildedSword_f3dlite_material_026_layerOpaque[];
+extern Gfx mat_gGiFrogGildedSword_f3d_outline_layerOpaque[];
+extern Gfx mat_revert_gGiFrogGildedSword_f3d_outline_layerOpaque[];
 extern Gfx gGiFrogGildedSword[];
 
 #endif
