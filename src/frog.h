@@ -7,6 +7,7 @@
 #include "skel/gFrogHumanSkel.h"
 #include "skel/gFrogHumanFistSkel.h"
 #include "skel/gFrogHumanBottleSkel.h"
+#include "skel/gFrogHumanOcarinaSkel.h"
 
 #include "dl/gCull.h"
 #include "dl/gFrogMouthClosed.h"
@@ -22,7 +23,13 @@
 #include "dl/gGiFrogShield.h"
 
 #define FROG_HEIGHT 0.51f
+#define FROG_BREMEN_HEIGHT 0.76f
 #define FROG_YINTERSECT -350.0f
+
+#define MTX_HOOD_SCALE 0.5f
+#define MTX_HOOD_LOC_X 0.f
+#define MTX_HOOD_LOC_Y 0.f
+#define MTX_HOOD_LOC_Z 0.f
 
 typedef enum FrogGetItemDrawId {
     /* -1 */   FROG_GID_NONE = -1,
@@ -30,7 +37,7 @@ typedef enum FrogGetItemDrawId {
     /*  1 */   FROG_GID_SHIELD_HERO,
     /*  2 */   FROG_GID_SHIELD_MIRROR,
     /*  3 */   FROG_GID_MAX,
-}FrogGetItemDrawId;
+} FrogGetItemDrawId;
 
 extern struct PlayerFaceIndices {
     /* 0x0 */ u8 eyeIndex;

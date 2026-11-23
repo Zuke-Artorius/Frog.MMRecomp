@@ -16,8 +16,30 @@ Gfx scaled_gi_frog_shield[] = {
     gsSPEndDisplayList()
 };
 
+bool bunnyHoodTweaksEnabled = false;
+
+RECOMP_IMPORT("yazmt_mm_bunnyhoodtweaks", bool BunnyHoodTweaks_isPlayerRunSpeedModified(PlayState *play, Player *player));
+
 RECOMP_CALLBACK("*", recomp_on_init)
 void on_init() {
+    DependencyStatus bunnyHoodTweaksStatus = recomp_is_dependency_met("yazmt_mm_bunnyhoodtweaks");
+
+    switch (bunnyHoodTweaksStatus) {
+        case DEPENDENCY_STATUS_FOUND:
+            bunnyHoodTweaksEnabled = true;
+            recomp_printf("[INFO] Frog: Found optional dependency BunnyHoodTweaks!\n");
+            break;
+        case DEPENDENCY_STATUS_INVALID_DEPENDENCY:
+            recomp_printf("[INFO] Frog: Optional dependency BunnyHoodTweaks ID mismatch!\n");
+            break;
+        case DEPENDENCY_STATUS_NOT_FOUND:
+            recomp_printf("[INFO] Frog: Optional dependency BunnyHoodTweaks not found\n");
+            break;
+        case DEPENDENCY_STATUS_WRONG_VERSION:
+            recomp_printf("[INFO] Frog: Optional dependency BunnyHoodTweaks version mismatch!\n");
+            break;
+    }
+
     guScale(&frog_getitem_scale_mtx, 0.1f, 0.1f, 0.1f);
 }
 
@@ -81,6 +103,7 @@ PlayerModelManagerHandle gFrogHumanHandle;
 PlayerModelManagerHandle gFrogShieldHeroHandle;
 PlayerModelManagerHandle gFrogShieldMirrorHandle;
 PlayerModelManagerHandle gFrogSwordGildedHandle;
+PlayerModelManagerHandle gFrogHoodHandle;
 
 PLAYERMODELMANAGER_CALLBACK_REGISTER_MODELS void registerBase() {
     PlayerModelManagerHandle frogHandle = PLAYERMODELMANAGER_REGISTER_MODEL("pmm_ctfrog_pack", PMM_MODEL_TYPE_MODEL_PACK);
@@ -95,6 +118,7 @@ PLAYERMODELMANAGER_CALLBACK_REGISTER_MODELS void registerBase() {
         PlayerModelManager_setDisplayList(frogHuman, PMM_DL_RFIST, gFrogHumanFistSkel_bone018_gLinkHumanRightHandLimb_mesh_layer_Opaque);
         PlayerModelManager_setDisplayList(frogHuman, PMM_DL_LFIST, gFrogHumanFistSkel_bone015_gLinkHumanLeftHandLimb_mesh_layer_Opaque);
         PlayerModelManager_setDisplayList(frogHuman, PMM_DL_LHAND_BOTTLE, gFrogHumanBottleSkel_bone015_gLinkHumanLeftHandLimb_mesh_layer_Opaque);
+        PlayerModelManager_setDisplayList(frogHuman, PMM_DL_OPT_RHAND_OCARINA, gFrogHumanOcarinaSkel_bone018_gLinkHumanRightHandLimb_mesh_layer_Opaque);
         PlayerModelManager_setCallback(frogHuman, Frog_EventHandler_Human, NULL);
         PlayerModelManager_addHandleToPack(frogHandle, frogHuman);
         gFrogHumanHandle = frogHuman;
@@ -107,7 +131,6 @@ PLAYERMODELMANAGER_CALLBACK_REGISTER_MODELS void registerBase() {
         PlayerModelManager_addHandleToPack(frogHandle, frogShieldHero);
         gFrogShieldHeroHandle = frogShieldHero;
         
-
     PlayerModelManagerHandle frogShieldMirror = PLAYERMODELMANAGER_REGISTER_MODEL("pmm_ctfrog_shield_mirror", PMM_MODEL_TYPE_SHIELD_MIRROR);
         PlayerModelManager_setAuthor(frogShieldMirror, "Zuke");
         PlayerModelManager_setDisplayName(frogShieldMirror, "Frog");
@@ -116,7 +139,7 @@ PLAYERMODELMANAGER_CALLBACK_REGISTER_MODELS void registerBase() {
         PlayerModelManager_addHandleToPack(frogHandle, frogShieldMirror);
         gFrogShieldMirrorHandle = frogShieldMirror;
         
-        PlayerModelManagerHandle frogSwordGilded = PLAYERMODELMANAGER_REGISTER_MODEL("pmm_ctfrog_sword_gilded", PMM_MODEL_TYPE_SWORD_GILDED);
+    PlayerModelManagerHandle frogSwordGilded = PLAYERMODELMANAGER_REGISTER_MODEL("pmm_ctfrog_sword_gilded", PMM_MODEL_TYPE_SWORD_GILDED);
         PlayerModelManager_setAuthor(frogSwordGilded, "Zuke");
         PlayerModelManager_setDisplayName(frogSwordGilded, "Frog");
         PlayerModelManager_setDisplayList(frogSwordGilded, PMM_DL_SWORD_GILDED_HILT, gFrogHilt);
@@ -125,17 +148,39 @@ PLAYERMODELMANAGER_CALLBACK_REGISTER_MODELS void registerBase() {
         PlayerModelManager_setCallback(frogSwordGilded, Frog_EventHandler_GetItem, (void*)(uintptr_t)FROG_GID_SWORD_GILDED);
         PlayerModelManager_addHandleToPack(frogHandle, frogSwordGilded);
         gFrogSwordGildedHandle = frogSwordGilded;
+        
+    PlayerModelManagerHandle frogHood = PLAYERMODELMANAGER_REGISTER_MODEL("pmm_ctfrog_mask_bunny", PMM_MODEL_TYPE_MASK_BUNNY);
+        PlayerModelManager_setAuthor(frogHood, "Zuke");
+        PlayerModelManager_setDisplayName(frogHood, "Frog");
+        PlayerModelManager_setDisplayList(frogHood, PMM_DL_MASK_BUNNY, gCull);
+        PlayerModelManager_addHandleToPack(frogHandle, frogHood);
+        gFrogHoodHandle = frogHood;
 }
 
 RECOMP_HOOK("Player_Draw") void on_Player_Draw(Actor* thisx, PlayState* play) {
     if (!isFrog) {
         return;
     }
+
     Player* this = (Player*)thisx;
     
     if (this->transformation == PLAYER_FORM_HUMAN) {
         this->ageProperties = &gFrogAgeProperties;
         D_801C08FC[this->transformation] = FrogYIntersectArr[this->transformation];
+    }
+}
+
+RECOMP_HOOK("Player_OverrideLimbDrawGameplayCommon") 
+void on_Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, Actor* thisx) {
+    if (!isFrog) {
+        return;
+    }
+    
+    Player* this = (Player*)thisx;
+
+    if ((this->transformation == PLAYER_FORM_HUMAN) &&
+    (this->stateFlags3 & PLAYER_STATE3_20000000)) {
+        pos->y *= FROG_BREMEN_HEIGHT;
     }
 }
 
@@ -169,7 +214,7 @@ RECOMP_HOOK("Player_DrawImpl") void on_Player_DrawImpl(PlayState* play, void** s
     }
 }
 
-u8 gPushedMatrix;
+u8 gPushedLimbMatrix;
 
 RECOMP_HOOK("Player_PostLimbDrawGameplay") void on_Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList1, Gfx** dList2, Vec3s* rot, Actor* actor) {
     int modActiveBoolSum = isFrog;
@@ -195,7 +240,7 @@ RECOMP_HOOK("Player_PostLimbDrawGameplay") void on_Player_PostLimbDrawGameplay(P
     if (isFrog && limbIndex == PLAYER_LIMB_HEAD) {
         OPEN_DISPS(play->state.gfxCtx);
         Matrix_Push();
-        gPushedMatrix++;
+        gPushedLimbMatrix++;
         Matrix_Translate(0.f, 0.F, 0.f, MTXMODE_APPLY);
         MATRIX_FINALIZE_AND_LOAD(POLY_OPA_DISP++, play->state.gfxCtx);
         gSPDisplayList(POLY_OPA_DISP++, gFrogMouth);
@@ -212,7 +257,7 @@ RECOMP_HOOK("Player_PostLimbDrawGameplay") void on_Player_PostLimbDrawGameplay(P
         gFrogRHand = gFrogShield;
         OPEN_DISPS(play->state.gfxCtx);
         Matrix_Push();
-        gPushedMatrix++;
+        gPushedLimbMatrix++;
         Matrix_Translate(0.f, 0.F, 0.f, MTXMODE_APPLY);
         MATRIX_FINALIZE_AND_LOAD(POLY_OPA_DISP++, play->state.gfxCtx);
         gSPDisplayList(POLY_OPA_DISP++, gFrogRHand);
@@ -221,12 +266,30 @@ RECOMP_HOOK("Player_PostLimbDrawGameplay") void on_Player_PostLimbDrawGameplay(P
 }
 
 RECOMP_HOOK_RETURN("Player_PostLimbDrawGameplay") void return_Player_PostLimbDrawGameplay(void) {
-    if (!gPushedMatrix) {
-        return;
-    }
-    while (gPushedMatrix) {
+    while (gPushedLimbMatrix) {
         Matrix_Pop();
-        gPushedMatrix--;
+        gPushedLimbMatrix--;
+    }
+}
+
+u8 gPushedHoodMatrix;
+
+RECOMP_HOOK("Player_DrawBunnyHood") void on_Player_DrawBunnyHood(PlayState* play) {
+    Player* player = GET_PLAYER(play);
+
+    OPEN_DISPS(play->state.gfxCtx);
+    Matrix_Push();
+    gPushedHoodMatrix++;
+    Matrix_Scale(MTX_HOOD_SCALE, MTX_HOOD_SCALE, MTX_HOOD_SCALE, MTXMODE_APPLY);
+    Matrix_Translate(MTX_HOOD_LOC_X, MTX_HOOD_LOC_Y, MTX_HOOD_LOC_Z, MTXMODE_APPLY);
+    MATRIX_FINALIZE_AND_LOAD(POLY_OPA_DISP++, play->state.gfxCtx);
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+RECOMP_HOOK_RETURN("Player_DrawBunnyHood") void return_Player_DrawBunnyHood(void) {
+    while (gPushedHoodMatrix) {
+        Matrix_Pop();
+        gPushedHoodMatrix--;
     }
 }
 
@@ -242,7 +305,7 @@ RECOMP_HOOK("Player_OverrideLimbDrawGameplayDefault") void on_Player_OverrideLim
         Matrix_Put(&sSheathMatrix);
 
         pos->x += -1000.f;
-        pos->z += -900.f;
+        pos->z += -1000.f;
         pos->y += 200.f;
 
         rot->z += DEG_TO_BINANG(-112.5f);
